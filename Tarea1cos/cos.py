@@ -1,4 +1,3 @@
-# Ejecutelo en la terminal
 import math
 
 #Ingresar el angulo a calcular
@@ -11,7 +10,7 @@ vlr=(vlr*math.pi)/180
 coseno=0
 pot=0
 
-#Se realiza la sucesión...
+#Se realiza la sucesión
 for i in range (0,n):
       coseno+=((vlr**pot)/(math.factorial(pot)))
       coseno=coseno*(-1)

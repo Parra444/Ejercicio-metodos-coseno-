@@ -3,7 +3,7 @@ import math
 #Ingresar el angulo a calcular
 vlr=int(input('Ingrese el valor de coseno que desea calcular... '))
 #Ingrasar el numero de sucesiones
-n=int(input('Ingrese el número de sucesiones que desea... '))
+n=int(input('Ingrese el número de sucesiones que desea (Máximo 80 sucesiones)... '))
 
 #Convertimos a radianes
 vlr=(vlr*math.pi)/180
@@ -14,6 +14,7 @@ pot=0
 for i in range (0,n):
       coseno+=((vlr**pot)/(math.factorial(pot)))
       coseno=coseno*(-1)
+      round(coseno,5)
       pot=pot+2
 
 vlrexacto=math.cos(vlr)

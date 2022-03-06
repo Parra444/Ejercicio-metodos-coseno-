@@ -1,3 +1,5 @@
+#Código realizado por JESUS JAIR PARRA JIMENEZ - Ejercicio 3 METODOS NUMÉRICOS
+
 import math
 #Se abre un loop while para que se repita el proceso las veces que se desee.
 while True:

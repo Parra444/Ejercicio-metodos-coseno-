@@ -25,42 +25,51 @@ import math
 # INGRESO DE INFORMACIÓN
 # ======================
 
-print('---SE USA EL MÉTODO DE BISECCIÓN---') #Se especifica el metodo usado
-xa= float(input('Ingrese el valor inicial del intervalo: ')) #Acá se ingresa el extremo izquierdo del intervalo
-xb= float(input('Ingrese el valor final del intervalo: '))#Acá se ingresa el extremo derecho del intervalo
-tolerancia = float(input('Ingrese la tolerancia: '))#Acá se ingresa la tolerancia
+#Condicional inicial para que el ejecutable haga el proceso todas las veces que se desee y no se cierre antes de mostrar el resultado
 
-#Definimos una función f que nos retorna el valor que tiene al ser evaluada con un valor x
-#En este caso se usa como ejemplo la función f(x)=x+7
-def f(x):
-    return x+7 #IMPORTANTE!!: SI SE DESEA USAR OTRA FUNCIÓN SE DEBE CAMBIAR ACÁ, LUEGO DEL RETURN..
 
-i = 0 #i representará el número de iteraciones
-fc = 999999 #representa la función evaluada en el punto medio (c). Se debe inicializar con un número alto para que entre en el ciclo while
-
-if(f(xa)*f(xb)<=0): #Este condicional global nos sirve para determinar si la función tiene solución en el intervalo ingresado
-
-    while abs(fc)>= tolerancia: #Nuestro ciclo se seguirá ejecutando hasta que el error porcentual sea menor que la tolerancia
+def metodoBiseccion(fun, xa, xb, tolerancia):
+    print('---SE USA EL MÉTODO DE BISECCIÓN PARA RESOLVER LA FUNCION : ',fun) #Se especifica el metodo usado
     
-        puntoMedio= (xa + xb)/2 #Calculamos el punto medio
-        f_a = f(xa) #Evaluamos en el extremo izquierdo de la raiz
-        f_b = f(xb) #Evaluamos en el extremo derecho de la raiz
-        fc = f(puntoMedio) #Evaluamos en el punto medio
+    #Definimos una función f que nos retorna el valor que tiene al ser evaluada con un valor x
+    def f(x):
+        return eval(fun) #IMPORTANTE!!: SI SE DESEA USAR OTRA FUNCIÓN SE DEBE CAMBIAR ACÁ, LUEGO DEL RETURN..
 
-        i+=1 #Sumamos 1 iteración cada vez que se repita el proceso
-        print('Inicio del intervalo: ', xa, ' Final del intervalo: ', xb, ' Raíz aproximada: ', puntoMedio, ' Error porcentual: ', abs(fc*100),' # Iteraciones: ', i)
+    i = 0 #i representará el número de iteraciones
+    errorcal = 999999 #representa la función evaluada en el punto medio (c). Se debe inicializar con un número alto para que entre en el ciclo while
+
+    if(f(xa)*f(xb)<=0): #Este condicional global nos sirve para determinar si la función tiene solución en el intervalo ingresado
+
+        while abs(errorcal)>= tolerancia: #Nuestro ciclo se seguirá ejecutando hasta que el error porcentual sea menor que la tolerancia
     
-        #Hacemos los condicionales para determinar si el siguiente punto va a ser del punto medio a la izquierda o del punto medio a la derecha
-        if(f_a * fc)<0: #Si el producto de f(a)*f(c) es negativo, entonces nuestro nuevo intervalo sera [a,c]
-            xb=puntoMedio
-        elif (f_b * fc)<0:#Si el producto de f(b)*f(c) es negativo, entonces nuestro nuevo intervalo sera [b,c]
-            xa = puntoMedio
+            puntoMedio= (xa + xb)/2 #Calculamos el punto medio
+            f_a = f(xa) #Evaluamos en el extremo izquierdo de la raiz
+            f_b = f(xb) #Evaluamos en el extremo derecho de la raiz
+            fc = f(puntoMedio) #Evaluamos en el punto medio
+            
+            
+            i+=1 #Sumamos 1 iteración cada vez que se repita el proceso
+            print('Inicio del intervalo: ', xa, ' Final del intervalo: ', xb, ' Raíz aproximada: ', puntoMedio, ' Error porcentual: ', errorcal,'%',' # Iteraciones: ', i)
+            
+            #Hacemos los condicionales para determinar si el siguiente punto va a ser del punto medio a la izquierda o del punto medio a la derecha
+            if(f_a * fc)<0: #Si el producto de f(a)*f(c) es negativo, entonces nuestro nuevo intervalo sera [a,c]
+                if(xb==0):
+                    errorcal=100
+                else:
+                    errorcal=float(abs(((puntoMedio-xb)/xb)*100))
+                xb=puntoMedio
+            elif (f_b * fc)<0:#Si el producto de f(b)*f(c) es negativo, entonces nuestro nuevo intervalo sera [b,c]
+                if(xa==0):
+                    errorcal=100
+                else:
+                    errorcal=float(abs(((puntoMedio-xa)/xa)*100))
+                xa = puntoMedio
+            
+            if i >= 1000: #Hacemos otra condición para que se cierre el ciclo en caso de que en 1000 iteraciones no encuentre la raiz
+                break
 
-        if i >= 1000: #Hacemos otra condición para que se cierre el ciclo en caso de que en 1000 iteraciones no encuentre la raiz
-            break
+        #  Se imprime la raiz aproximada que encontramos
+        print('La raiz buscada es: ', puntoMedio)
 
-    #  Se imprime la raiz aproximada que encontramos
-    print('La raiz buscada es: ', puntoMedio)
-
-else:
-    print('No existe solución en este intervalo')
+    else:
+        print('No existe solución en este intervalo')

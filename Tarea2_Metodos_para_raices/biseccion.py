@@ -17,26 +17,25 @@
 
 # ======================================================================
 
-#Se importa la libreria math para utilizar algunas funciones matemáticas que no trae
+#Se importa la libreria math, numpy y matplotlib para utilizar algunas funciones matemáticas que no trae
 #el python base
 import math
+import matplotlib.pyplot as plt
+import numpy as np
 
-# ======================================================================
-# INGRESO DE INFORMACIÓN
-# ======================
-
-#Condicional inicial para que el ejecutable haga el proceso todas las veces que se desee y no se cierre antes de mostrar el resultado
-
+#Definimos la función metodoBiseccion que recibe como parametros la funcion, los extremos izquierdo y derecho del intervalo y la tolerancia maxima
 
 def metodoBiseccion(fun, xa, xb, tolerancia):
-    print('---SE USA EL MÉTODO DE BISECCIÓN PARA RESOLVER LA FUNCION : ',fun) #Se especifica el metodo usado
+    print('\n\n---SE USA EL MÉTODO DE BISECCIÓN PARA RESOLVER LA FUNCION : ',fun) #Se especifica el metodo usado
     
     #Definimos una función f que nos retorna el valor que tiene al ser evaluada con un valor x
     def f(x):
-        return eval(fun) #IMPORTANTE!!: SI SE DESEA USAR OTRA FUNCIÓN SE DEBE CAMBIAR ACÁ, LUEGO DEL RETURN..
-
+        return eval(fun)
     i = 0 #i representará el número de iteraciones
     errorcal = 999999 #representa la función evaluada en el punto medio (c). Se debe inicializar con un número alto para que entre en el ciclo while
+    vectorIteraciones=list() #Vector para guardar las iteraciones para la gráfica
+    vectorErrores=list()#Vector para guardar el valor de los errores para la gráfica
+    vectorGlobal=list() #Vector global que contendrá los vectores de las iteraciones y los errores
 
     if(f(xa)*f(xb)<=0): #Este condicional global nos sirve para determinar si la función tiene solución en el intervalo ingresado
 
@@ -49,27 +48,32 @@ def metodoBiseccion(fun, xa, xb, tolerancia):
             
             
             i+=1 #Sumamos 1 iteración cada vez que se repita el proceso
+
+            #==============SALIDA DE DATOS=================
+
             print('Inicio del intervalo: ', xa, ' Final del intervalo: ', xb, ' Raíz aproximada: ', puntoMedio, ' Error porcentual: ', errorcal,'%',' # Iteraciones: ', i)
             
             #Hacemos los condicionales para determinar si el siguiente punto va a ser del punto medio a la izquierda o del punto medio a la derecha
             if(f_a * fc)<0: #Si el producto de f(a)*f(c) es negativo, entonces nuestro nuevo intervalo sera [a,c]
-                if(xb==0):
+                if(xb==0):#Condicional para que si existen intervalos iguales inversos, la división por cero se omita
                     errorcal=100
-                else:
+                else:#Se calcula el error porcentual cuando la solución está dada por el extremo xb
                     errorcal=float(abs(((puntoMedio-xb)/xb)*100))
                 xb=puntoMedio
             elif (f_b * fc)<0:#Si el producto de f(b)*f(c) es negativo, entonces nuestro nuevo intervalo sera [b,c]
-                if(xa==0):
+                if(xa==0):#Condicional para que si existen intervalos iguales inversos, la división por cero se omita
                     errorcal=100
-                else:
+                else:#Se calcula el error porcentual cuando la solución está dada por el extremo xa
                     errorcal=float(abs(((puntoMedio-xa)/xa)*100))
                 xa = puntoMedio
-            
+            vectorErrores.append(errorcal)#Luego de terminar el proceso se acumula el valor del error en un vector
+            vectorIteraciones.append(i)#Luego de terminar el proceso se acumula la iteracion en un vector
             if i >= 1000: #Hacemos otra condición para que se cierre el ciclo en caso de que en 1000 iteraciones no encuentre la raiz
                 break
 
         #  Se imprime la raiz aproximada que encontramos
         print('La raiz buscada es: ', puntoMedio)
-
+        vectorGlobal=vectorIteraciones+vectorErrores#Se crea un vector general que contiene el vector con el número de iteraciones y los valores de los errores
+        return np.array(vectorGlobal)#Se devuelve el vector general
     else:
         print('No existe solución en este intervalo')
